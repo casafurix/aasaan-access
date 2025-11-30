@@ -92,4 +92,3 @@ export function ContributeSection() {
     </section>
   );
 }
-

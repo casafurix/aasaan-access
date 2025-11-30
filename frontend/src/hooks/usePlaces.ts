@@ -1,24 +1,38 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Place, PlaceFilters } from '@/types/place';
 
+const API_URL = import.meta.env.VITE_API_URL || '/api';
+
 export function usePlaces() {
   const [places, setPlaces] = useState<Place[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<PlaceFilters>({});
 
-  // Fetch places data
+  // Fetch places data from backend API
   useEffect(() => {
     async function fetchPlaces() {
       try {
-        const response = await fetch('/data/places.json');
+        // Fetch all places (with large page size to get all)
+        const response = await fetch(`${API_URL}/places?page_size=100`);
         if (!response.ok) {
           throw new Error('Failed to fetch places data');
         }
         const data = await response.json();
-        setPlaces(data);
+        setPlaces(data.items || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
+        // Fallback to static data if API fails
+        try {
+          const fallbackResponse = await fetch('/data/places.json');
+          if (fallbackResponse.ok) {
+            const fallbackData = await fallbackResponse.json();
+            setPlaces(fallbackData);
+            setError(null);
+          }
+        } catch {
+          // Keep the original error
+        }
       } finally {
         setLoading(false);
       }
@@ -83,6 +97,20 @@ export function usePlaces() {
     setFilters(newFilters);
   }, []);
 
+  // Refetch places (useful after contribution is approved)
+  const refetch = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_URL}/places?page_size=100`);
+      if (response.ok) {
+        const data = await response.json();
+        setPlaces(data.items || []);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return {
     places,
     filteredPlaces,
@@ -92,5 +120,6 @@ export function usePlaces() {
     loading,
     error,
     stats,
+    refetch,
   };
 }

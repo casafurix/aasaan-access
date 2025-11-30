@@ -16,10 +16,11 @@ import {
   Sun,
   HeadphonesIcon,
   UserRoundCheck,
-  ExternalLink,
+  Edit,
   MapPin
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ContributionForm } from './ContributionForm';
 
 interface PlaceCardProps {
   place: Place;
@@ -49,8 +50,6 @@ const statusConfig = {
   },
 };
 
-const GOOGLE_FORM_URL = 'https://forms.gle/YOUR_FORM_ID'; // Replace with actual form URL
-
 export function PlaceCard({ place, onClose }: PlaceCardProps) {
   const config = statusConfig[place.accessibility_status];
   const StatusIcon = config.icon;
@@ -64,11 +63,6 @@ export function PlaceCard({ place, onClose }: PlaceCardProps) {
     { key: 'braille_signage', label: 'Braille Signage', icon: BookOpen, value: place.braille_signage },
     { key: 'staff_assistance', label: 'Staff Assistance', icon: UserRoundCheck, value: place.staff_assistance_available },
   ];
-
-  const handleContribute = () => {
-    const formUrl = `${GOOGLE_FORM_URL}?place_id=${place.id}&place_name=${encodeURIComponent(place.name)}`;
-    window.open(formUrl, '_blank');
-  };
 
   return (
     <div className="glass-card rounded-xl overflow-hidden animate-slide-in-right">
@@ -187,14 +181,16 @@ export function PlaceCard({ place, onClose }: PlaceCardProps) {
 
       {/* Footer - CTA */}
       <div className="p-4 border-t border-border bg-muted/30">
-        <Button
-          onClick={handleContribute}
-          className="w-full gap-2"
-          variant="default"
-        >
-          <ExternalLink className="w-4 h-4" />
-          Contribute / Edit this place
-        </Button>
+        <ContributionForm
+          placeId={place.id}
+          placeName={place.name}
+          trigger={
+            <Button className="w-full gap-2" variant="default">
+              <Edit className="w-4 h-4" />
+              Suggest an Edit
+            </Button>
+          }
+        />
         <p className="text-xs text-center text-muted-foreground mt-2">
           Help us improve accessibility data for everyone
         </p>
