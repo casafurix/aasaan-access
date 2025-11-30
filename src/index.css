@@ -2,87 +2,121 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* आसान Access Design System
+   A warm, accessible, trustworthy civic tech aesthetic
+   Inspired by Indian national colors (saffron/white/green) + modern accessibility standards
 */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core palette - warm saffron/teal theme */
+    --background: 40 33% 98%;
+    --foreground: 220 20% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 20% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 20% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Saffron orange - primary brand */
+    --primary: 28 89% 52%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Teal - secondary accent */
+    --secondary: 174 62% 35%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 40 20% 94%;
+    --muted-foreground: 220 10% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - warm gold */
+    --accent: 45 93% 58%;
+    --accent-foreground: 220 20% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 28 89% 52%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
+    /* Accessibility status colors */
+    --status-accessible: 142 71% 45%;
+    --status-partial: 45 93% 47%;
+    --status-not-accessible: 0 72% 51%;
+    --status-unknown: 220 10% 65%;
+
+    /* Map specific */
+    --map-overlay: 0 0% 100%;
+    --map-shadow: 220 20% 15%;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(28 89% 52% / 0.1) 0%, hsl(174 62% 35% / 0.1) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(40 33% 98%) 100%);
+    --gradient-status: linear-gradient(90deg, hsl(var(--status-accessible)) 0%, hsl(var(--status-partial)) 50%, hsl(var(--status-not-accessible)) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px hsl(220 20% 15% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(220 20% 15% / 0.1), 0 2px 4px -2px hsl(220 20% 15% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(220 20% 15% / 0.1), 0 4px 6px -4px hsl(220 20% 15% / 0.1);
+    --shadow-glow: 0 0 20px hsl(28 89% 52% / 0.3);
+
+    /* Sidebar (keeping for compatibility) */
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 220 20% 10%;
+    --foreground: 40 20% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 20% 13%;
+    --card-foreground: 40 20% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 20% 13%;
+    --popover-foreground: 40 20% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 28 89% 55%;
+    --primary-foreground: 220 20% 10%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 174 62% 40%;
+    --secondary-foreground: 220 20% 10%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 15% 18%;
+    --muted-foreground: 220 10% 60%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 45 93% 55%;
+    --accent-foreground: 220 20% 10%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 220 15% 22%;
+    --input: 220 15% 22%;
+    --ring: 28 89% 55%;
+
+    --status-accessible: 142 71% 50%;
+    --status-partial: 45 93% 52%;
+    --status-not-accessible: 0 72% 55%;
+    --status-unknown: 220 10% 50%;
+
+    --map-overlay: 220 20% 15%;
+    --map-shadow: 0 0% 0%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(28 89% 55% / 0.15) 0%, hsl(174 62% 40% / 0.15) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(220 20% 13%) 0%, hsl(220 20% 10%) 100%);
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -99,7 +133,149 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  html {
+    scroll-behavior: smooth;
   }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* Status badge variants */
+  .status-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+
+  .status-accessible {
+    @apply bg-status-accessible/15 text-status-accessible;
+  }
+
+  .status-partial {
+    @apply bg-status-partial/15 text-status-partial;
+  }
+
+  .status-not-accessible {
+    @apply bg-status-not-accessible/15 text-status-not-accessible;
+  }
+
+  .status-unknown {
+    @apply bg-status-unknown/15 text-status-unknown;
+  }
+
+  /* Map marker pulse animation */
+  .marker-pulse {
+    animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 0.4;
+    }
+    100% {
+      transform: scale(0.8);
+      opacity: 0.8;
+    }
+  }
+
+  /* Glass morphism card */
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-md border border-border/50;
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+  }
+}
+
+@layer utilities {
+  /* Accessibility status colors as utilities */
+  .bg-status-accessible {
+    background-color: hsl(var(--status-accessible));
+  }
+  .bg-status-partial {
+    background-color: hsl(var(--status-partial));
+  }
+  .bg-status-not-accessible {
+    background-color: hsl(var(--status-not-accessible));
+  }
+  .bg-status-unknown {
+    background-color: hsl(var(--status-unknown));
+  }
+
+  .text-status-accessible {
+    color: hsl(var(--status-accessible));
+  }
+  .text-status-partial {
+    color: hsl(var(--status-partial));
+  }
+  .text-status-not-accessible {
+    color: hsl(var(--status-not-accessible));
+  }
+  .text-status-unknown {
+    color: hsl(var(--status-unknown));
+  }
+
+  /* Animation delays */
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+}
+
+/* Leaflet overrides for our theme */
+.leaflet-container {
+  font-family: inherit;
+  background: hsl(var(--muted));
+}
+
+.leaflet-popup-content-wrapper {
+  @apply rounded-lg shadow-lg border border-border bg-card;
+  padding: 0;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  min-width: 280px;
+}
+
+.leaflet-popup-tip {
+  @apply bg-card;
+}
+
+.leaflet-control-zoom {
+  @apply border-none shadow-lg overflow-hidden rounded-lg;
+}
+
+.leaflet-control-zoom a {
+  @apply bg-card text-foreground border-b border-border hover:bg-muted transition-colors;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+}
+
+.leaflet-control-zoom a:last-child {
+  @apply border-b-0;
+}
+
+.leaflet-control-attribution {
+  @apply bg-card/90 backdrop-blur-sm text-muted-foreground text-xs px-2 py-1 rounded-tl-lg;
 }

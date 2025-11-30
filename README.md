@@ -1,73 +1,176 @@
-# Welcome to your Lovable project
+# 🇮🇳 आसान Access - Accessibility Mapping for India
 
-## Project info
+**आसान (Aasan)** means "easy" in Hindi. This project makes accessibility information for places in India easy to find, use, and share.
 
-**URL**: https://lovable.dev/projects/f1c4bf8f-3d54-4a81-a236-5d84e624911d
+## 🎯 Project Overview
 
-## How can I edit this code?
+आसान Access is an open-data platform that shows how accessible everyday places are across India for disabled people. It provides:
 
-There are several ways of editing your application.
+- 🗺️ **Interactive Map** - Leaflet.js map with color-coded accessibility markers
+- 📊 **Open Data** - Public CSV, JSON, and GeoJSON datasets
+- 🤝 **Community Contributions** - Google Forms-based data collection
+- 🌐 **Free API** - Static endpoints for developers
 
-**Use Lovable**
+## 🚀 Quick Start
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f1c4bf8f-3d54-4a81-a236-5d84e624911d) and start prompting.
+```bash
+# Install dependencies
+npm install
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
 ```
 
-**Edit a file directly in GitHub**
+## 📁 Data Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Places Dataset
 
-**Use GitHub Codespaces**
+Each place contains:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique identifier (e.g., `poi_001`) |
+| `name` | string | Place name in English |
+| `name_local` | string | Place name in local script (Hindi/Marathi) |
+| `category` | string | Type of place (hospital, station, etc.) |
+| `latitude` | number | GPS latitude |
+| `longitude` | number | GPS longitude |
+| `address` | string | Full address |
 
-## What technologies are used for this project?
+### Accessibility Attributes
 
-This project is built with:
+| Field | Type | Values |
+|-------|------|--------|
+| `ramp_present` | boolean | true/false |
+| `step_free_entrance` | boolean | true/false |
+| `accessible_restroom` | enum | `none`, `partial`, `full` |
+| `tactile_paving` | boolean | true/false |
+| `audio_signage` | boolean | true/false |
+| `braille_signage` | boolean | true/false |
+| `lighting_level` | enum | `low`, `medium`, `high` |
+| `noise_level` | enum | `low`, `medium`, `high` |
+| `staff_assistance_available` | boolean | true/false |
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Derived Fields
 
-## How can I deploy this project?
+| Field | Values | Description |
+|-------|--------|-------------|
+| `accessibility_status` | `accessible`, `partially_accessible`, `not_accessible`, `unknown` | Overall accessibility rating |
+| `source` | `user`, `manual`, `osm` | Data source |
+| `updated_at` | ISO timestamp | Last update time |
 
-Simply open [Lovable](https://lovable.dev/projects/f1c4bf8f-3d54-4a81-a236-5d84e624911d) and click on Share -> Publish.
+## 📥 Data Access / API
 
-## Can I connect a custom domain to my Lovable project?
+All data is available as static files:
 
-Yes, you can!
+```
+GET /data/places.json      # Full dataset as JSON
+GET /data/places.csv       # Full dataset as CSV
+GET /data/places.geojson   # Full dataset as GeoJSON
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Example Usage
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```javascript
+// Fetch all places
+const response = await fetch('/data/places.json');
+const places = await response.json();
+
+// Filter accessible places
+const accessible = places.filter(p => p.accessibility_status === 'accessible');
+```
+
+## 🗺️ Map Legend
+
+| Color | Status | Description |
+|-------|--------|-------------|
+| 🟢 Green | Accessible | Fully accessible for wheelchair users |
+| 🟡 Yellow | Partially Accessible | Some accessibility features present |
+| 🔴 Red | Not Accessible | Significant barriers present |
+| ⚪ Grey | Unknown | No accessibility data yet |
+
+## 🤝 Contributing Data
+
+### Via Google Form
+
+1. Visit a place and observe its accessibility features
+2. Fill out the contribution form (linked on the website)
+3. Our team reviews submissions
+4. Approved data is added to the public dataset
+
+### Data Refresh Workflow
+
+1. **Google Form** → Responses land in Google Sheets
+2. **Manual Review** → Mark submissions as approved/rejected
+3. **Merge Script** → Run `scripts/merge-data.js` (coming soon)
+4. **Deploy** → Updated data files are deployed automatically
+
+## 🏗️ Tech Stack
+
+- **Frontend**: React + TypeScript + Vite
+- **Styling**: Tailwind CSS + Shadcn/UI
+- **Maps**: Leaflet.js + React-Leaflet
+- **Data**: Static JSON/CSV/GeoJSON files
+- **Hosting**: Static hosting (GitHub Pages / Netlify / Vercel)
+
+## 📂 Project Structure
+
+```
+├── public/
+│   └── data/
+│       ├── places.json      # Main dataset (JSON)
+│       ├── places.csv       # Main dataset (CSV)
+│       └── places.geojson   # Main dataset (GeoJSON)
+├── src/
+│   ├── components/          # React components
+│   │   ├── AccessibilityMap.tsx
+│   │   ├── PlaceCard.tsx
+│   │   ├── FilterPanel.tsx
+│   │   └── ...
+│   ├── hooks/
+│   │   └── usePlaces.ts     # Data fetching hook
+│   ├── types/
+│   │   └── place.ts         # TypeScript types
+│   └── pages/
+│       └── Index.tsx        # Main page
+└── README.md
+```
+
+## 🔜 Roadmap
+
+### Phase 1 (Current) ✅
+- [x] Static map with Mumbai POIs
+- [x] Public CSV/JSON/GeoJSON endpoints
+- [x] Filter by accessibility features
+- [x] Color-coded markers
+- [x] Place detail cards
+
+### Phase 2 (Planned)
+- [ ] Google Forms integration
+- [ ] OSM data import script
+- [ ] More cities (Delhi, Bengaluru)
+- [ ] Marker clustering for performance
+- [ ] Search functionality
+
+### Phase 3 (Future)
+- [ ] User accounts (optional)
+- [ ] Photo uploads
+- [ ] Verified reviews
+- [ ] Mobile app
+
+## 📄 License
+
+- **Code**: MIT License
+- **Data**: [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/)
+
+## 🙏 Acknowledgments
+
+- Data sources: OpenStreetMap contributors, community members
+- Built with love for the disability community in India 💚
+
+---
+
+*"आसान" means "easy" - because accessibility information should be easy to find for everyone.*
