@@ -1,8 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ExternalLink, ClipboardList, CheckCircle, Upload, Users } from 'lucide-react';
-
-const GOOGLE_FORM_URL = 'https://forms.gle/YOUR_FORM_ID';
+import { Plus, ClipboardList, CheckCircle, Upload, Users } from 'lucide-react';
+import { ContributionForm } from './ContributionForm';
 
 export function ContributeSection() {
   const steps = [
@@ -45,7 +44,7 @@ export function ContributeSection() {
             <div key={step.title} className="relative">
               {/* Connector line between cards */}
               {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-12 left-[calc(50%+24px)] right-[calc(-50%+24px)] h-0.5 bg-border" />
+                <div className="hidden md:block absolute top-12 left-[calc(50%+24px)] w-[calc(100%-48px)] h-0.5 bg-border" />
               )}
               <Card className="text-center h-full relative z-10">
               <CardHeader>
@@ -73,18 +72,16 @@ export function ContributeSection() {
             <p className="text-muted-foreground mb-6">
               It takes less than 2 minutes to submit accessibility information for a place you've visited.
             </p>
-            <Button
-              size="lg"
-              className="gap-2 shadow-lg hover:shadow-xl transition-shadow"
-              asChild
-            >
-              <a href={GOOGLE_FORM_URL} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-5 h-5" />
-                Open Contribution Form
-              </a>
-            </Button>
+            <ContributionForm
+              trigger={
+                <Button size="lg" className="gap-2 shadow-lg hover:shadow-xl transition-shadow">
+                  <Plus className="w-5 h-5" />
+                  Add a Place
+                </Button>
+              }
+            />
             <p className="text-xs text-muted-foreground mt-4">
-              Opens Google Forms in a new tab • No login required
+              No login required • All submissions reviewed before publishing
             </p>
           </CardContent>
         </Card>

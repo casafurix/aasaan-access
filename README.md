@@ -8,8 +8,8 @@
 
 - 🗺️ **Interactive Map** - Leaflet.js map with color-coded accessibility markers
 - 📊 **Open Data** - Public API and downloadable datasets
-- 🤝 **Community Contributions** - Submit accessibility data through the app
-- 🌐 **REST API** - Full CRUD API with geospatial search
+- 🤝 **Community Contributions** - Submit accessibility data via in-app form
+- 🌐 **REST API** - Full CRUD API with geospatial search (nearby places)
 
 ## 🚀 Quick Start
 
@@ -110,8 +110,15 @@ cd frontend && npm install && npm run dev
 | ------ | --------------------------------- | ----------------------- |
 | POST   | `/api/contributions`              | Submit new contribution |
 | GET    | `/api/contributions`              | List all (admin)        |
-| POST   | `/api/contributions/{id}/approve` | Approve contribution    |
-| POST   | `/api/contributions/{id}/reject`  | Reject contribution     |
+| GET    | `/api/contributions/pending`      | List pending (admin)    |
+| POST   | `/api/contributions/{id}/approve` | Approve & create/update |
+| POST   | `/api/contributions/{id}/reject`  | Reject with reason      |
+
+### Health
+
+| Method | Endpoint      | Description  |
+| ------ | ------------- | ------------ |
+| GET    | `/api/health` | Health check |
 
 ### Documentation
 
@@ -154,6 +161,24 @@ cd frontend && npm install && npm run dev
 | `source`               | `user`, `manual`, `osm`                                           | Data source      |
 | `updated_at`           | ISO timestamp                                                     | Last update time |
 
+## 🤝 Contributing Data
+
+### How to Contribute
+
+1. **Add a Place** - Click "Add a Place" in the Contribute section to submit a new location
+2. **Suggest an Edit** - Click "Suggest an Edit" on any place card to update existing information
+
+All submissions go through a moderation queue before being published.
+
+### Moderation Flow
+
+1. User submits contribution → Status: `pending`
+2. Admin reviews at `/api/contributions/pending`
+3. Admin approves → Place created/updated, Status: `approved`
+4. Or admin rejects with reason → Status: `rejected`
+
+> ⚠️ **Note**: Admin endpoints (`/approve`, `/reject`) currently have no authentication. Add auth before production deployment.
+
 ## 🗺️ Map Legend
 
 | Color     | Status               | Description                           |
@@ -162,6 +187,31 @@ cd frontend && npm install && npm run dev
 | 🟡 Yellow | Partially Accessible | Some accessibility features present   |
 | 🔴 Red    | Not Accessible       | Significant barriers present          |
 | ⚪ Grey   | Unknown              | No accessibility data yet             |
+
+## ⚙️ Environment Variables
+
+### Backend (`backend/.env`)
+
+```bash
+# Database connection
+DB_HOST=db
+DB_PORT=5432
+DB_NAME=aasaan_access
+DB_USER=postgres
+DB_PASSWORD=postgres
+
+# App settings
+DEBUG=true
+```
+
+### Frontend (`frontend/.env`)
+
+```bash
+# API URL (optional - defaults to /api which proxies to backend)
+VITE_API_URL=http://localhost:8000/api
+```
+
+> In Docker, the frontend Nginx config proxies `/api` requests to the backend container.
 
 ## 🛠️ Make Commands
 
@@ -188,19 +238,23 @@ make clean         # Remove all containers and volumes
 
 ### Phase 2 ✅
 
-- [x] FastAPI backend with PostgreSQL
+- [x] FastAPI backend with PostgreSQL + PostGIS
 - [x] REST API with CRUD operations
 - [x] Geospatial search (nearby places)
-- [x] Contribution system with moderation
-- [x] Docker containerization
+- [x] In-app contribution form (add & edit places)
+- [x] Contribution moderation queue (approve/reject)
+- [x] Docker containerization (full stack)
+- [x] API fallback to static data
 
 ### Phase 3 (Planned)
 
-- [ ] User authentication
-- [ ] Photo uploads
-- [ ] OSM data import
-- [ ] More cities (Delhi, Bengaluru)
-- [ ] Mobile app
+- [ ] Admin authentication for moderation endpoints
+- [ ] Rate limiting & spam protection
+- [ ] Photo uploads (S3/Cloudinary)
+- [ ] Server-side filtering (offload from client)
+- [ ] OSM data import pipeline
+- [ ] More cities (Delhi, Bengaluru, Chennai)
+- [ ] Mobile app (React Native / PWA)
 
 ## 📄 License
 
