@@ -1,0 +1,86 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_001",
+        "name": "Chhatrapati Shivaji Maharaj Terminus",
+        "name_local": "छत्रपती शिवाजी महाराज टर्मिनस",
+        "category": "railway_station",
+        "address": "Dr. D N Road, Fort, Mumbai 400001",
+        "ramp_present": true,
+        "step_free_entrance": true,
+        "accessible_restroom": "full",
+        "tactile_paving": true,
+        "audio_signage": true,
+        "braille_signage": true,
+        "lighting_level": "high",
+        "noise_level": "high",
+        "staff_assistance_available": true,
+        "notes": "Wheelchair assistance available at platform. Contact station master.",
+        "accessibility_status": "accessible",
+        "updated_at": "2024-11-15T10:30:00Z",
+        "source": "manual"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [72.8355, 18.9398]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_002",
+        "name": "Gateway of India",
+        "name_local": "गेटवे ऑफ इंडिया",
+        "category": "monument",
+        "address": "Apollo Bandar, Colaba, Mumbai 400001",
+        "ramp_present": false,
+        "step_free_entrance": false,
+        "accessible_restroom": "none",
+        "tactile_paving": false,
+        "audio_signage": false,
+        "braille_signage": false,
+        "lighting_level": "high",
+        "noise_level": "medium",
+        "staff_assistance_available": true,
+        "notes": "Steps at entrance. Partial access via side route.",
+        "accessibility_status": "partially_accessible",
+        "updated_at": "2024-11-10T14:20:00Z",
+        "source": "user"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [72.8347, 18.9220]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "poi_003",
+        "name": "Lilavati Hospital",
+        "name_local": "लीलावती अस्पताल",
+        "category": "hospital",
+        "address": "A-791, Bandra Reclamation, Bandra West, Mumbai 400050",
+        "ramp_present": true,
+        "step_free_entrance": true,
+        "accessible_restroom": "full",
+        "tactile_paving": true,
+        "audio_signage": false,
+        "braille_signage": true,
+        "lighting_level": "high",
+        "noise_level": "low",
+        "staff_assistance_available": true,
+        "notes": "Fully accessible. Wheelchair available at entrance.",
+        "accessibility_status": "accessible",
+        "updated_at": "2024-11-20T09:15:00Z",
+        "source": "manual"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [72.8287, 19.0510]
+      }
+    }
+  ]
+}
