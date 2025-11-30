@@ -47,11 +47,11 @@ async def submit_contribution(data: ContributionCreate, db: DbSession):
         staff_assistance_available=data.staff_assistance_available,
         notes=data.notes,
     )
-    
+
     db.add(contribution)
     await db.commit()
     await db.refresh(contribution)
-    
+
     return contribution
 
 
@@ -65,17 +65,18 @@ async def list_contributions(
     List contributions (admin endpoint).
     """
     offset, limit, page = pagination
-    
+
     query = select(Contribution).order_by(Contribution.created_at.desc())
-    
+
     if status:
-        query = query.where(Contribution.status == DBContributionStatus(status.value))
-    
+        query = query.where(Contribution.status ==
+                            DBContributionStatus(status.value))
+
     query = query.offset(offset).limit(limit)
-    
+
     result = await db.execute(query)
     contributions = result.scalars().all()
-    
+
     return contributions
 
 
@@ -101,10 +102,10 @@ async def get_contribution(contribution_id: UUID, db: DbSession):
         select(Contribution).where(Contribution.id == contribution_id)
     )
     contribution = result.scalar_one_or_none()
-    
+
     if not contribution:
         raise HTTPException(status_code=404, detail="Contribution not found")
-    
+
     return contribution
 
 
@@ -121,13 +122,14 @@ async def approve_contribution(
         select(Contribution).where(Contribution.id == contribution_id)
     )
     contribution = result.scalar_one_or_none()
-    
+
     if not contribution:
         raise HTTPException(status_code=404, detail="Contribution not found")
-    
+
     if contribution.status != DBContributionStatus.PENDING:
-        raise HTTPException(status_code=400, detail="Contribution already reviewed")
-    
+        raise HTTPException(
+            status_code=400, detail="Contribution already reviewed")
+
     # Create or update place
     if contribution.place_id:
         # Update existing place
@@ -135,10 +137,11 @@ async def approve_contribution(
             select(Place).where(Place.id == contribution.place_id)
         )
         place = place_result.scalar_one_or_none()
-        
+
         if not place:
-            raise HTTPException(status_code=404, detail="Original place not found")
-        
+            raise HTTPException(
+                status_code=404, detail="Original place not found")
+
         # Update place fields
         place.name = contribution.name
         place.name_local = contribution.name_local
@@ -158,8 +161,9 @@ async def approve_contribution(
         place.staff_assistance_available = contribution.staff_assistance_available
         place.notes = contribution.notes
         # Recalculate accessibility status
-        place.accessibility_status = calculate_accessibility_status(contribution)
-        
+        place.accessibility_status = calculate_accessibility_status(
+            contribution)
+
     else:
         # Create new place
         place = Place(
@@ -184,18 +188,18 @@ async def approve_contribution(
             source="user",
         )
         db.add(place)
-    
+
     # Update contribution status
     contribution.status = DBContributionStatus.APPROVED
     if review and review.reviewer_notes:
         contribution.reviewer_notes = review.reviewer_notes
-    
+
     from datetime import datetime, timezone
     contribution.reviewed_at = datetime.now(timezone.utc)
-    
+
     await db.commit()
     await db.refresh(place)
-    
+
     return place
 
 
@@ -212,22 +216,23 @@ async def reject_contribution(
         select(Contribution).where(Contribution.id == contribution_id)
     )
     contribution = result.scalar_one_or_none()
-    
+
     if not contribution:
         raise HTTPException(status_code=404, detail="Contribution not found")
-    
+
     if contribution.status != DBContributionStatus.PENDING:
-        raise HTTPException(status_code=400, detail="Contribution already reviewed")
-    
+        raise HTTPException(
+            status_code=400, detail="Contribution already reviewed")
+
     contribution.status = DBContributionStatus.REJECTED
     contribution.reviewer_notes = review.reviewer_notes
-    
+
     from datetime import datetime, timezone
     contribution.reviewed_at = datetime.now(timezone.utc)
-    
+
     await db.commit()
     await db.refresh(contribution)
-    
+
     return contribution
 
 
@@ -236,11 +241,11 @@ def calculate_accessibility_status(contribution: Contribution):
     Calculate accessibility status based on attributes.
     """
     from app.models.place import AccessibilityStatus, RestroomAccessibility
-    
+
     # Count positive accessibility features
     score = 0
     max_score = 6
-    
+
     if contribution.ramp_present:
         score += 1
     if contribution.step_free_entrance:
@@ -253,10 +258,10 @@ def calculate_accessibility_status(contribution: Contribution):
         score += 1
     if contribution.staff_assistance_available:
         score += 1
-    
+
     # Determine status based on score
     ratio = score / max_score
-    
+
     if ratio >= 0.7:
         return AccessibilityStatus.accessible
     elif ratio >= 0.3:
@@ -265,4 +270,3 @@ def calculate_accessibility_status(contribution: Contribution):
         return AccessibilityStatus.not_accessible
     else:
         return AccessibilityStatus.unknown
-
