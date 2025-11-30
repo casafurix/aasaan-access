@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExternalLink, ClipboardList, CheckCircle, Upload, Users } from 'lucide-react';
 
-const GOOGLE_FORM_URL = 'https://forms.gle/YOUR_FORM_ID'; // Replace with actual form URL
+const GOOGLE_FORM_URL = 'https://forms.gle/YOUR_FORM_ID';
 
 export function ContributeSection() {
   const steps = [
@@ -40,33 +40,31 @@ export function ContributeSection() {
           </p>
         </div>
 
-        {/* How it works */}
         <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
           {steps.map((step, index) => (
             <div key={step.title} className="relative">
-              {/* Connector line */}
+              {/* Connector line between cards */}
               {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-gradient-to-r from-border to-transparent -translate-x-1/2" />
+                <div className="hidden md:block absolute top-12 left-[calc(50%+24px)] right-[calc(-50%+24px)] h-0.5 bg-border" />
               )}
-              <Card className="text-center h-full">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">
-                    <step.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center mx-auto -mt-4 border-4 border-card">
-                    <span className="text-sm font-bold text-muted-foreground">{index + 1}</span>
-                  </div>
-                </CardHeader>
-                <CardContent className="-mt-2">
-                  <CardTitle className="text-lg mb-2">{step.title}</CardTitle>
-                  <CardDescription>{step.description}</CardDescription>
-                </CardContent>
-              </Card>
+              <Card className="text-center h-full relative z-10">
+              <CardHeader>
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">
+                  <step.icon className="w-6 h-6 text-primary" />
+                </div>
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center mx-auto -mt-4 border-4 border-card">
+                  <span className="text-sm font-bold text-muted-foreground">{index + 1}</span>
+                </div>
+              </CardHeader>
+              <CardContent className="-mt-2">
+                <CardTitle className="text-lg mb-2">{step.title}</CardTitle>
+                <CardDescription>{step.description}</CardDescription>
+              </CardContent>
+            </Card>
             </div>
           ))}
         </div>
 
-        {/* CTA Card */}
         <Card className="max-w-2xl mx-auto bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
           <CardContent className="p-8 text-center">
             <h3 className="text-2xl font-bold text-foreground mb-3">
@@ -94,3 +92,4 @@ export function ContributeSection() {
     </section>
   );
 }
+
